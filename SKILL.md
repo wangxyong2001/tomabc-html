@@ -5,9 +5,13 @@ description: |
   三域名架构、视觉系统、HTML 模板、logo 使用规范、学习笔记/视频系列发布
 license: MIT
 metadata:
-  version: "2.1.0"
+  version: "2.2.0"
   author: "yongwang"
   changelog: |
+    2.2.0 — 2026-08-13 新增第二套模板：DBS 玻璃感模板（已固定）
+      - DBS 玻璃感模板正式登记为第二套模板，样式/logo 与第一套完全独立
+      - 模板文件位于 dbs-template/，参考设计稿 5b26b23dd35c6813.png
+      - 修复 tomabc-html/assets/ 下旧版灰色 dbs-logo 残留（已覆盖为正确版本）
     2.1.0 — 2026-07-22 Logo 统一
       - 统一为 tomabc.com 像素猫头 + "TomABC" 文字组合
       - 移除 Reverse Grok 横版组合 SVG（与线上不一致）
@@ -244,6 +248,60 @@ mermaid 代码块渲染为：
 - 640px 断点：导航和 footer 改纵向排列
 - 所有间距使用 `clamp()` 函数
 
+## 第二套模板：DBS 玻璃感模板（v1.0 · 已固定）
+
+> 2026-08-13 固定。与第一套（TomABC）**完全独立**：样式文件、logo、设计令牌均不共享。DBS 页面禁止混用 TomABC 资源（含像素猫 logo、`--ground` 暖白令牌、`#C8161D` 红色）。
+
+### 定位
+
+DBS 品牌页面（论文精读、深度内容）。视觉风格：粉紫渐变背景 + 彩色光斑 + 半透明白色毛玻璃卡片。参考设计稿：`5b26b23dd35c6813.png`。
+
+### 设计令牌
+
+```css
+--ink:#2A2A28; --ink-soft:#4A4A48; --ink-quiet:#8A8984;
+--red:#E50014;                     /* DBS 红，唯一强调色 */
+--glass:rgba(255,255,255,0.55);    /* 玻璃卡片底 */
+--glass-strong:rgba(255,255,255,0.75);
+--glass-border:rgba(255,255,255,0.7);
+--shadow:0 10px 40px rgba(120,90,160,0.12);
+--radius:20px;
+```
+
+背景：`linear-gradient(180deg,#F2DDE0 0%,#E6DDEB 30%,#E4E3EF 55%,#F7F5F8 80%,#FFFFFF 100%)` + `background-attachment:fixed`；body 首部放 3 个固定彩色光斑 `.blob`（`filter:blur(90px)`，颜色 `#F2B8C4 / #C9BCE8 / #F4D3B0`）。
+
+### 页面骨架
+
+1. 3 个 `.blob` 光斑（`<body>` 首个子元素）
+2. 玻璃导航 `.glass-nav`（`rgba(255,255,255,0.45)` + `backdrop-filter:blur(18px) saturate(160%)`，内含 `.nav-wrap` + logo；**无其他导航链接**）
+3. 主体 `.page`：每个 h2 章节包在 `.glass-card` 内（`rgba(255,255,255,0.55)` + `blur(20px)` + 圆角 20px + 内侧高光）
+4. `.footer`
+
+### Logo 规范（DBS）
+
+- 文件：`dbs-template/dbs-logo.png`（透明底，内容红色 `#E50014` 不透明）/ `dbs-logo.b64`（内联 base64）/ `dbs-logo.jpg`（原图）
+- 单文件 HTML：`<img src="data:image/png;base64,{b64}" alt="DBS" style="width:auto;height:clamp(48px,7vh,64px);flex-shrink:0">`
+- 部署页面：`<img src="/dbs-logo.png">`
+- **保持原色，禁止灰度化 / 变透明**；logo 图片底部小字已裁除，不得重新添加
+
+### 样式文件规则
+
+- 单文件 HTML：内联 `dbs-template/dbs.css` 全部内容到 `<style>`
+- 多页面站点：`<link rel="stylesheet" href="/dbs.css">`
+- 二选一，禁止同时使用；`dbs.css` 与第一套样式完全独立，不得互相引用
+
+### 全局约束
+
+与第一套一致：无 emoji、无 AI 术语、统计数据真实准确。
+
+### 模板文件（dbs-template/）
+
+| 文件 | 用途 |
+|------|------|
+| `dbs.css` | 独立玻璃风样式表 |
+| `dbs-logo.png / .b64 / .jpg` | DBS logo（透明底 / 内联 base64 / 原图） |
+| `encrypted-reasoning-blobs.html` | 锁定示例（论文精读页，已发布页完整副本，含 10 张玻璃卡片） |
+
 ## 内容类型
 
 ### 视频系列页面
@@ -264,8 +322,12 @@ mermaid 代码块渲染为：
 2. 转换：Python 脚本 `cc-scratch-builder.py` → HTML
 3. 音频：`edge-tts --voice zh-CN-XiaoxiaoNeural --file <narration.txt> --write-media <output.mp3>`
 4. 口播稿需口语化，跳过代码参数名
-5. 部署：rsync 到 VPS `/www/wwwroot/demo.tomabc.com/<path>/`
-6. 更新索引页，标记就绪章节
+5. **敏感词过滤（发布前必做）**：`python3 tools/sensitive_filter/sensitive_filter.py check <内容目录>`
+   - 无命中 → 直接发布
+   - 有命中 → `clean` 出清洗版 + 报告 → 人工确认后发布清洗版（原文件不动）
+   - 误伤治理：把误伤词追加到 `tools/sensitive_filter/dict/whitelist/tech.txt`（每行一词）后重跑（详见该工具 README）
+6. 部署：rsync 到 VPS `/www/wwwroot/demo.tomabc.com/<path>/`
+7. 更新索引页，标记就绪章节
 
 ### 口播配音规则
 

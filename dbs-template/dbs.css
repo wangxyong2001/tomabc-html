@@ -1,0 +1,162 @@
+/* ============================================================
+   DBS Glass Design System — 独立样式文件（与 tomabc 无关）
+   玻璃感：粉紫渐变背景 + 彩色光斑 + 半透明白色模糊卡片
+   单文件 HTML 使用时将本文件内容内联进 <style>
+   ============================================================ */
+
+:root{
+  --ink:#2A2A28;
+  --ink-soft:#4A4A48;
+  --ink-quiet:#8A8984;
+  --red:#E50014;
+  --glass:rgba(255,255,255,0.55);
+  --glass-strong:rgba(255,255,255,0.75);
+  --glass-border:rgba(255,255,255,0.7);
+  --shadow:0 10px 40px rgba(120,90,160,0.12);
+  --radius:20px;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+html{
+  background:#F7F5F8;
+  color:var(--ink);
+  font-family:system-ui,-apple-system,'PingFang SC','Noto Sans CJK SC','Microsoft YaHei',sans-serif;
+  font-size:clamp(15px,2.3vw,17px);
+  line-height:1.9;
+  -webkit-font-smoothing:antialiased;
+}
+
+body{
+  min-height:100vh;
+  overflow-x:hidden;
+  padding-top:clamp(64px,9vh,84px);
+  background:linear-gradient(180deg,#F2DDE0 0%,#E6DDEB 30%,#E4E3EF 55%,#F7F5F8 80%,#FFFFFF 100%);
+  background-attachment:fixed;
+}
+
+/* ---- 背景光斑（玻璃反射源，fixed 于内容之下） ---- */
+.blob{position:fixed;border-radius:50%;filter:blur(90px);opacity:.5;z-index:0;pointer-events:none}
+.blob-1{width:480px;height:480px;background:#F2B8C4;top:-140px;left:-120px}
+.blob-2{width:440px;height:440px;background:#C9BCE8;top:28%;right:-160px}
+.blob-3{width:400px;height:400px;background:#F4D3B0;bottom:-140px;left:28%}
+
+/* ---- 玻璃导航条 ---- */
+.glass-nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(255,255,255,0.45);
+  backdrop-filter:blur(18px) saturate(160%);
+  -webkit-backdrop-filter:blur(18px) saturate(160%);
+  border-bottom:1px solid var(--glass-border);
+}
+.nav-wrap{
+  max-width:900px;margin:0 auto;
+  padding:clamp(8px,1.2vh,12px) clamp(16px,4vw,36px);
+  display:flex;justify-content:space-between;align-items:center;gap:12px;
+  position:relative;z-index:1;
+}
+
+
+/* ---- 内容列 ---- */
+.page{max-width:860px;margin:0 auto;padding:clamp(20px,3.5vh,32px) clamp(16px,4vw,36px) clamp(48px,8vh,80px);position:relative;z-index:1}
+.rule{border:none;height:1px;background:rgba(255,255,255,0.7);margin:clamp(28px,5vh,40px) 0}
+
+/* ---- 玻璃卡片 ---- */
+.glass-card{
+  background:var(--glass);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border:1px solid var(--glass-border);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,0.65);
+  padding:clamp(20px,3.5vh,30px);
+  margin-bottom:clamp(20px,3.2vh,30px);
+}
+
+/* ---- 标题 ---- */
+h1{font-size:clamp(1.35rem,3.4vw,1.8rem);font-weight:600;line-height:1.45;margin-bottom:14px}
+h2{
+  font-size:clamp(1.05rem,2.4vw,1.25rem);font-weight:600;
+  margin:0 0 clamp(10px,1.5vh,14px);
+  padding-left:14px;position:relative;
+}
+h2::before{content:"";position:absolute;left:0;top:0.18em;bottom:0.18em;width:4px;
+  background:var(--red);border-radius:2px}
+h3{font-size:clamp(0.95rem,2vw,1.08rem);font-weight:600;margin:clamp(16px,2.6vh,22px) 0 clamp(6px,1vh,10px);color:var(--ink-soft)}
+h4{font-size:clamp(0.85rem,1.5vw,0.95rem);font-weight:600;margin:clamp(12px,2vh,16px) 0 4px;color:var(--ink-soft)}
+
+/* ---- 元信息与标签 chips ---- */
+.meta-line{font-size:clamp(11px,1.3vw,13px);color:var(--ink-soft);margin-bottom:clamp(16px,2.5vh,22px);line-height:2}
+.meta-line a{color:var(--red);text-decoration:none;border-bottom:1px solid rgba(229,0,20,0.35)}
+.tag{display:inline-block;font-size:11px;padding:3px 12px;border-radius:999px;margin-right:6px;letter-spacing:0.02em;
+  border:1px solid rgba(229,0,20,0.35);color:var(--red);background:rgba(229,0,20,0.06)}
+.tag-red{border-color:rgba(229,0,20,0.45);color:var(--red);background:rgba(229,0,20,0.08)}
+.tag-green{border-color:rgba(42,138,90,0.4);color:#2A8A5A;background:rgba(42,138,90,0.07)}
+.tag-blue{border-color:rgba(59,125,216,0.4);color:#3B7DD8;background:rgba(59,125,216,0.07)}
+.tag-purple{border-color:rgba(139,92,246,0.4);color:#8B5CF6;background:rgba(139,92,246,0.07)}
+.tag-teal{border-color:rgba(13,148,136,0.4);color:#0D9488;background:rgba(13,148,136,0.07)}
+.tag-orange{border-color:rgba(217,119,6,0.4);color:#D97706;background:rgba(217,119,6,0.07)}
+
+/* ---- 迭代块 / 说明块 ---- */
+.iter-box,.note{
+  background:rgba(255,255,255,0.5);
+  border:1px solid var(--glass-border);
+  border-radius:14px;
+  padding:clamp(14px,2.2vh,20px) clamp(16px,2.4vw,22px);
+  margin-bottom:clamp(18px,2.8vh,24px);
+}
+.iter-box p{margin-bottom:6px;font-size:clamp(0.85rem,1.4vw,0.92rem)}
+.iter-box p:last-child{margin-bottom:0}
+.iter-label{font-weight:600;color:var(--ink)}
+.iter-red{color:var(--red);font-weight:600}
+.note{font-size:clamp(0.8rem,1.3vw,0.86rem);color:var(--ink-soft);border-left:3px solid var(--red)}
+.note strong{color:var(--ink)}
+
+/* ---- 正文 ---- */
+p{margin-bottom:clamp(10px,1.5vh,14px);color:var(--ink)}
+strong{color:var(--ink)}
+ul,ol{margin:clamp(6px,1vh,10px) 0 clamp(12px,2vh,18px) clamp(20px,3vw,28px)}
+li{margin-bottom:5px}
+
+/* ---- 公式 ---- */
+.formula{font-family:'Times New Roman',serif;font-style:italic;text-align:center;
+  margin:clamp(12px,2vh,20px) auto;font-size:clamp(14px,1.8vw,17px);color:var(--ink);
+  padding:clamp(14px,2vh,20px);background:rgba(255,255,255,0.55);
+  border:1px solid var(--glass-border);border-radius:14px;max-width:95%;overflow-x:auto;line-height:2}
+.formula-label{font-family:system-ui,sans-serif;font-style:normal;font-size:clamp(10px,1.1vw,11px);
+  color:var(--ink-quiet);text-align:right;margin-top:-8px;margin-bottom:clamp(10px,1.5vh,14px)}
+
+/* ---- 代码 ---- */
+pre{background:rgba(255,255,255,0.6);border:1px solid var(--glass-border);border-radius:14px;
+  padding:clamp(12px,2vh,16px);overflow-x:auto;font-size:clamp(11px,1.2vw,13px);line-height:1.7;
+  font-family:'JetBrains Mono','Fira Code','Consolas',monospace;margin:clamp(10px,1.5vh,14px) 0}
+code{font-family:'JetBrains Mono','Fira Code','Consolas',monospace;font-size:clamp(11px,1.2vw,13px);
+  background:rgba(255,255,255,0.7);padding:1px 5px;border-radius:6px}
+pre code{background:none;padding:0}
+
+/* ---- 表格 ---- */
+table{width:100%;border-collapse:separate;border-spacing:0;margin:clamp(12px,2vh,16px) 0;
+  font-size:clamp(11px,1.3vw,13px);overflow:hidden;border-radius:14px;
+  background:rgba(255,255,255,0.45);border:1px solid var(--glass-border)}
+th{text-align:left;font-weight:600;padding:clamp(8px,1vh,10px) clamp(10px,1.4vw,14px);
+  color:var(--ink);background:rgba(255,255,255,0.6);border-bottom:1px solid var(--glass-border)}
+td{padding:clamp(8px,1vh,10px) clamp(10px,1.4vw,14px);border-bottom:1px solid rgba(255,255,255,0.55);color:var(--ink-soft)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(255,255,255,0.35)}
+
+/* ---- 页脚 ---- */
+.footer{margin-top:clamp(40px,7vh,60px);padding-top:clamp(20px,3vh,28px);
+  border-top:1px solid var(--glass-border);display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:12px}
+.footer-text{font-size:clamp(0.7rem,1.2vw,0.75rem);color:var(--ink-quiet)}
+.footer-links{display:flex;gap:clamp(12px,2vw,18px)}
+.footer-links a{font-size:clamp(0.7rem,1.2vw,0.75rem);color:var(--ink-soft);text-decoration:none;
+  padding:3px 10px;border-radius:999px;background:rgba(255,255,255,0.5);border:1px solid var(--glass-border);
+  transition:color 200ms}
+.footer-links a:hover{color:var(--red)}
+
+/* ---- 响应式 ---- */
+@media(max-width:640px){
+  .nav-wrap{flex-direction:column;align-items:flex-start;gap:6px}
+  body{padding-top:clamp(96px,14vh,120px)}
+}
